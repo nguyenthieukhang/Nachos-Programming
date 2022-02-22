@@ -68,6 +68,33 @@ int SysReadNum() {
   }
 }
 
+void SysPrintNum(int number) {
+  if (number == 0) {
+    kernel->synchConsoleOut->PutChar('0');
+    return;
+  }
+  if (number == INT_MIN) {
+    for (int i = 0; i < 11; ++i)
+      kernel->synchConsoleOut->PutChar("-2147483648"[i]);
+    return;    
+  }
+  if (number < 0) {
+    kernel->synchConsoleOut->PutChar('-');
+    number = -number;
+  }
+  int bufferSize = 0;
+  for (; number; number /= 10) buffer[bufferSize++] = number % 10 + '0';
+  for (int i = bufferSize - 1; i >= 0; --i) kernel->synchConsoleOut->PutChar(buffer[i]);
+}
+
+char SysReadChar() {
+  return kernel->synchConsoleIn->GetChar();
+}
+
+void SysPrintChar(char character) {
+  kernel->synchConsoleOut->PutChar(character);
+}
+
 /*******HELPER******/
 
 void readString() {
