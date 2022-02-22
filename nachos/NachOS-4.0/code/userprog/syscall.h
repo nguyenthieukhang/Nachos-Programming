@@ -36,6 +36,13 @@
 #define SC_ThreadJoin   15
 
 #define SC_Add		42
+#define SC_ReadNum  43
+#define SC_PrintNum 44
+#define SC_ReadChar 45
+#define SC_PrintChar    46
+#define SC_RandomNum    47
+#define SC_ReadString   48
+#define SC_PrintString  49
 
 #ifndef IN_ASM
 
@@ -58,6 +65,41 @@ void Halt();
  */ 
 
 int Add(int op1, int op2);
+
+/*
+ * Use SynchConsoleIn to read an integer. If the input is not an integer, return 0
+ */
+int ReadNum();
+
+/*
+ * Use SynchConsoleOut to print out the input number
+ */
+void PrintNum(int number);
+
+/*
+ * Use SynchConsoleIn to read a character
+ */
+char ReadChar();
+
+/*
+ * Use SynchConsoleOut to print out the input character
+ */
+char PrintChar(char character);
+
+/*
+ * Return a random positive integer
+ */
+int RandomNum();
+
+/*
+ * 
+ */
+char ReadString(char[] buffer, int length);
+
+/*
+ * Print out a string, not using cout, printf or similar
+ */
+void PrintString (char[] buffer);
 
 /* Address space control operations: Exit, Exec, Execv, and Join */
 
