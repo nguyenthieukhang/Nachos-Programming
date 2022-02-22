@@ -99,6 +99,46 @@ ExceptionHandler(ExceptionType which)
 
 			break;
 
+		case SC_ReadNum:
+			DEBUG(dbgSys, "Read an integer (return 0 if not integer)\n");
+			int result = SysReadNum();
+			DEBUG(dbgSys, "ReadNum returning with " << result << "\n");
+			kernel->machine->WriteRegister(2, result);
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_PrintNum:
+			DEBUG(dbgSys, "Print out an integer\n");
+			SysPrintNum(kernel->machine->ReadRegister(4));
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_ReadChar:
+			DEBUG(dbgSys, "Read a character\n");
+			char result = SysReadChar();
+			DEBUG(dbgSys, "ReadChar returning with " << result << "\n");
+			kernel->machine->WriteRegister(2, (int)result);
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_PrintChar:
+			DEBUG(dbgSys, "Print out a character\n");
+			SysPrintChar(kernel->machine->ReadRegister(4));
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
       	default:
 			cerr << "Unexpected system call " << type << "\n";
 			break;
