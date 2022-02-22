@@ -36,6 +36,7 @@
 #define SC_ThreadJoin   15
 
 #define SC_Add		42
+#define SC_ReadNum  43
 
 #ifndef IN_ASM
 
@@ -58,6 +59,16 @@ void Halt();
  */ 
 
 int Add(int op1, int op2);
+
+/*
+ * Use SynchConsoleIn to read an integer. If the input is not an integer, return 0
+ */
+int ReadNum();
+
+/*
+ * Use SynchConsoleOut to print out the input number
+ */
+void PrintNum(int number);
 
 /* Address space control operations: Exit, Exec, Execv, and Join */
 

@@ -60,6 +60,14 @@ Add:
 
 	.globl Exit
 	.ent	Exit
+ReadNum:
+	addiu $2,$0,SC_ReadNum
+	syscall
+	j	$31
+	.end ReadNum
+
+	.globl 
+	.ent	
 Exit:
 	addiu $2,$0,SC_Exit
 	syscall
