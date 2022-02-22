@@ -98,7 +98,33 @@ ExceptionHandler(ExceptionType which)
 	ASSERTNOTREACHED();
 
 	break;
+		case SC_RandomNum:
+		int result;
+		result=RandomNum();
+		kernel->machine->WriteRegister(2,(int)result);
+		increasePC();
+		return;
+		ASSERTNOTREACHED();
+		break;
 
+		case SC_ReadString:
+		int address = kernel->machine->ReadRegister(4);
+		int length = kernel->machine->ReadRegister(5);
+		char* buffer=ReadBuffer(length);
+
+		//Transfer from kernel to user space
+		for(int i=0;i<length;i++)
+		{
+			kernel->machine->WriteMem(address+i,1,buffer[i]);
+		}
+		kernel->machine->WriteMem(address+length,1,'\0');
+		
+		//clean up after moving to user space
+		delete[] buffer;
+		increasePC();
+		break;
+		ASSERTNOTREACHED();
+	
       default:
 	cerr << "Unexpected system call " << type << "\n";
 	break;

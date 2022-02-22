@@ -177,6 +177,14 @@ ThreadJoin:
 	syscall
 	j 	$31
 	.end ThreadJoin
+
+	.globl RandomNum
+	.ent    RandomNum
+RandomNum:
+	addiu $2, $0, SC_RandomNum
+	syscall
+	j 	$31
+	.end RandomNum
 	
 /* dummy function to keep gcc happy */
         .globl  __main
