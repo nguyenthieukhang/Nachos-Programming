@@ -69,44 +69,44 @@ ExceptionHandler(ExceptionType which)
 
     switch (which) {
     case SyscallException:
-      switch(type) {
-      case SC_Halt:
-	DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
+		switch(type) {
+		case SC_Halt:
+			DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
 
-	SysHalt();
+			SysHalt();
 
-	ASSERTNOTREACHED();
-	break;
+			ASSERTNOTREACHED();
+			break;
 
-      case SC_Add:
-	DEBUG(dbgSys, "Add " << kernel->machine->ReadRegister(4) << " + " << kernel->machine->ReadRegister(5) << "\n");
-	
-	/* Process SysAdd Systemcall*/
-	int result;
-	result = SysAdd(/* int op1 */(int)kernel->machine->ReadRegister(4),
-			/* int op2 */(int)kernel->machine->ReadRegister(5));
+    	case SC_Add:
+			DEBUG(dbgSys, "Add " << kernel->machine->ReadRegister(4) << " + " << kernel->machine->ReadRegister(5) << "\n");
+		
+			/* Process SysAdd Systemcall*/
+			int result;
+			result = SysAdd(/* int op1 */(int)kernel->machine->ReadRegister(4),
+					/* int op2 */(int)kernel->machine->ReadRegister(5));
 
-	DEBUG(dbgSys, "Add returning with " << result << "\n");
-	/* Prepare Result */
-	kernel->machine->WriteRegister(2, (int)result);
-	
-	/* Modify return point */
-	increasePC();
+			DEBUG(dbgSys, "Add returning with " << result << "\n");
+			/* Prepare Result */
+			kernel->machine->WriteRegister(2, (int)result);
+			
+			/* Modify return point */
+			increasePC();
 
-	return;
-	
-	ASSERTNOTREACHED();
+			return;
+			
+			ASSERTNOTREACHED();
 
-	break;
+			break;
 
-      default:
-	cerr << "Unexpected system call " << type << "\n";
-	break;
-      }
-      break;
+      	default:
+			cerr << "Unexpected system call " << type << "\n";
+			break;
+     	}
+	  	break;
 	case NoException:
-	kernel->interrupt->setStatus(SystemMode);
-	break;
+		kernel->interrupt->setStatus(SystemMode);
+		break;
 	case PageFaultException:
 	case ReadOnlyException:
 	case BusErrorException:
@@ -114,9 +114,10 @@ ExceptionHandler(ExceptionType which)
 	case OverflowException:
 	case IllegalInstrException:
 	case NumExceptionTypes:
-	cerr << "Exception occurred" << which << "\n";
-	SysHalt();
-	ASSERTNOTREACHED();
+		cerr << "Exception occurred" << which << "\n";
+		SysHalt();
+		break;
+		ASSERTNOTREACHED();
 
     default:
       cerr << "Unexpected user mode exception" << (int)which << "\n";
