@@ -69,44 +69,84 @@ ExceptionHandler(ExceptionType which)
 
     switch (which) {
     case SyscallException:
-      switch(type) {
-      case SC_Halt:
-	DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
+		switch(type) {
+		case SC_Halt:
+			DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
 
-	SysHalt();
+			SysHalt();
 
-	ASSERTNOTREACHED();
-	break;
+			ASSERTNOTREACHED();
+			break;
 
-      case SC_Add:
-	DEBUG(dbgSys, "Add " << kernel->machine->ReadRegister(4) << " + " << kernel->machine->ReadRegister(5) << "\n");
-	
-	/* Process SysAdd Systemcall*/
-	int result;
-	result = SysAdd(/* int op1 */(int)kernel->machine->ReadRegister(4),
-			/* int op2 */(int)kernel->machine->ReadRegister(5));
+    	case SC_Add:
+			DEBUG(dbgSys, "Add " << kernel->machine->ReadRegister(4) << " + " << kernel->machine->ReadRegister(5) << "\n");
+		
+			/* Process SysAdd Systemcall*/
+			int result;
+			result = SysAdd(/* int op1 */(int)kernel->machine->ReadRegister(4),
+					/* int op2 */(int)kernel->machine->ReadRegister(5));
 
-	DEBUG(dbgSys, "Add returning with " << result << "\n");
-	/* Prepare Result */
-	kernel->machine->WriteRegister(2, (int)result);
-	
-	/* Modify return point */
-	increasePC();
+			DEBUG(dbgSys, "Add returning with " << result << "\n");
+			/* Prepare Result */
+			kernel->machine->WriteRegister(2, (int)result);
+			
+			/* Modify return point */
+			increasePC();
 
-	return;
-	
-	ASSERTNOTREACHED();
+			return;
+			
+			ASSERTNOTREACHED();
 
-	break;
+			break;
 
-      default:
-	cerr << "Unexpected system call " << type << "\n";
-	break;
-      }
-      break;
+		case SC_ReadNum:
+			DEBUG(dbgSys, "Read an integer (return 0 if not integer)\n");
+			int result = SysReadNum();
+			DEBUG(dbgSys, "ReadNum returning with " << result << "\n");
+			kernel->machine->WriteRegister(2, result);
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_PrintNum:
+			DEBUG(dbgSys, "Print out an integer\n");
+			SysPrintNum(kernel->machine->ReadRegister(4));
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_ReadChar:
+			DEBUG(dbgSys, "Read a character\n");
+			char result = SysReadChar();
+			DEBUG(dbgSys, "ReadChar returning with " << result << "\n");
+			kernel->machine->WriteRegister(2, (int)result);
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_PrintChar:
+			DEBUG(dbgSys, "Print out a character\n");
+			SysPrintChar(kernel->machine->ReadRegister(4));
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+      	default:
+			cerr << "Unexpected system call " << type << "\n";
+			break;
+     	}
+	  	break;
 	case NoException:
-	kernel->interrupt->setStatus(SystemMode);
-	break;
+		kernel->interrupt->setStatus(SystemMode);
+		break;
 	case PageFaultException:
 	case ReadOnlyException:
 	case BusErrorException:
@@ -114,9 +154,10 @@ ExceptionHandler(ExceptionType which)
 	case OverflowException:
 	case IllegalInstrException:
 	case NumExceptionTypes:
-	cerr << "Exception occurred" << which << "\n";
-	SysHalt();
-	ASSERTNOTREACHED();
+		cerr << "Exception occurred" << which << "\n";
+		SysHalt();
+		break;
+		ASSERTNOTREACHED();
 
     default:
       cerr << "Unexpected user mode exception" << (int)which << "\n";
