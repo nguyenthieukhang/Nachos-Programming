@@ -94,12 +94,12 @@ int RandomNum();
 /*
  * 
  */
-char ReadString(char[] buffer, int length);
+char* ReadBuffer(int);
 
 /*
  * Print out a string, not using cout, printf or similar
  */
-void PrintString (char[] buffer);
+void PrintString (char[]);
 
 /* Address space control operations: Exit, Exec, Execv, and Join */
 

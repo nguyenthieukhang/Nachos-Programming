@@ -99,7 +99,6 @@ ExceptionHandler(ExceptionType which)
 
 	break;
 		case SC_RandomNum:
-		int result;
 		result=RandomNum();
 		kernel->machine->WriteRegister(2,(int)result);
 		increasePC();
@@ -108,17 +107,32 @@ ExceptionHandler(ExceptionType which)
 		break;
 
 		case SC_ReadString:
-		int address = kernel->machine->ReadRegister(4);
-		int length = kernel->machine->ReadRegister(5);
-		char* buffer=ReadBuffer(length);
+		int address;
+		address = kernel->machine->ReadRegister(4);
+		int length;
+		length = kernel->machine->ReadRegister(5);
+		if (address == 0 || length == 0)
+		{
+			DEBUG(dbgSys, "ReadString: address or length is 0\n");
+			increasePC();
+			return;
+		}
+		if (length>255)
+		{
+			DEBUG(dbgSys, "ReadString: length is too long\n");
+			increasePC();
+			return;
+		}
+		char* buffer;
+		buffer=ReadBuffer(length);
 
 		//Transfer from kernel to user space
-		for(int i=0;i<length;i++)
+
+		for (int i=0;i<length;i++)
 		{
 			kernel->machine->WriteMem(address+i,1,buffer[i]);
 		}
 		kernel->machine->WriteMem(address+length,1,'\0');
-		
 		//clean up after moving to user space
 		delete[] buffer;
 		increasePC();
