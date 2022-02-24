@@ -92,6 +92,14 @@ PrintChar:
 
 	.globl Exit
 	.ent	Exit
+PrintString:
+	addiu $2,$0,SC_PrintString
+	syscall
+	j	$31
+	.end PrintString
+
+	.globl Exit
+	.ent	Exit
 Exit:
 	addiu $2,$0,SC_Exit
 	syscall

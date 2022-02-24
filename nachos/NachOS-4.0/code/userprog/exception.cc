@@ -138,6 +138,32 @@ ExceptionHandler(ExceptionType which)
 		increasePC();
 		break;
 		ASSERTNOTREACHED();
+
+		case SC_PrintString:
+		int bufferAddress;
+		bufferAddress = kernel->machine->ReadRegister(4);
+		length = 0;
+		for(int i=0;;i++) {
+			int currentChar;
+			kernel->machine->ReadMem(bufferAddress+i,1, &currentChar);
+			if (currentChar == 0)
+				break;
+			length++;
+		}
+		char* buffer2;
+		buffer2 = new char[length+1];
+		for(int i=0;i<length;i++) {
+			int currentChar;
+			kernel->machine->ReadMem(bufferAddress+i,1, &currentChar);
+			buffer2[i] = (char)currentChar;
+		}
+		buffer2[length] = '\0';
+		SysPrintString(buffer2, length);
+		delete[] buffer2;
+		increasePC();
+		break;
+		ASSERTNOTREACHED();
+
 	
       default:
 	cerr << "Unexpected system call " << type << "\n";

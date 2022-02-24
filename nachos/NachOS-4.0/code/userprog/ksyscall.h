@@ -12,6 +12,7 @@
 #define __USERPROG_KSYSCALL_H__ 
 
 #include "kernel.h"
+#include "synchconsole.h"
 #include <stdlib.h>
 
 
@@ -47,6 +48,14 @@ char* ReadBuffer(int length)
 char ReadChar()
 {
 }
+
+void SysPrintString(char* str, int length) {
+  for(int i=0;i<length;i++)
+  {
+    kernel->synchConsoleOut->PutChar(str[i]);
+  }
+}
+
 
 
 
