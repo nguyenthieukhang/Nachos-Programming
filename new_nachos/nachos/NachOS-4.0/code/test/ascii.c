@@ -3,9 +3,11 @@
 int
 main()
 {
-  int result;
-  
-  result = Add(42, 23);
+  int i;
+  for(i=0; i<256; i++) {
+    PrintChar((char)i);
+    PrintChar(' ');
+  }
 
   Halt();
   /* not reached */
