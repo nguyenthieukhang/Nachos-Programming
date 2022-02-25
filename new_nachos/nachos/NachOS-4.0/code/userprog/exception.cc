@@ -69,6 +69,8 @@ void ExceptionHandler(ExceptionType which)
 	switch (which)
 	{
 	case SyscallException:
+		int resultInteger;
+		char resultChar;
 		switch (type)
 		{
 		case SC_Halt:
@@ -83,13 +85,13 @@ void ExceptionHandler(ExceptionType which)
 			DEBUG(dbgSys, "Add " << kernel->machine->ReadRegister(4) << " + " << kernel->machine->ReadRegister(5) << "\n");
 
 			/* Process SysAdd Systemcall*/
-			int result;
-			result = SysAdd(/* int op1 */ (int)kernel->machine->ReadRegister(4),
+			// int resultAdd;
+			resultInteger = SysAdd(/* int op1 */ (int)kernel->machine->ReadRegister(4),
 							/* int op2 */ (int)kernel->machine->ReadRegister(5));
 
-			DEBUG(dbgSys, "Add returning with " << result << "\n");
+			DEBUG(dbgSys, "Add returning with " << resultInteger << "\n");
 			/* Prepare Result */
-			kernel->machine->WriteRegister(2, (int)result);
+			kernel->machine->WriteRegister(2, (int)resultInteger);
 
 			/* Modify return point */
 			increasePC();
@@ -99,9 +101,48 @@ void ExceptionHandler(ExceptionType which)
 			ASSERTNOTREACHED();
 
 			break;
+		case SC_ReadNum:
+			DEBUG(dbgSys, "Read an integer (return 0 if not integer)\n");
+			resultInteger = SysReadNum();
+			DEBUG(dbgSys, "ReadNum returning with " << resultInteger << "\n");
+			kernel->machine->WriteRegister(2, resultInteger);
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_PrintNum:
+			DEBUG(dbgSys, "Print out an integer\n");
+			SysPrintNum(kernel->machine->ReadRegister(4));
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_ReadChar:
+			DEBUG(dbgSys, "Read a character\n");
+			resultChar = SysReadChar();
+			DEBUG(dbgSys, "ReadChar returning with " << resultChar << "\n");
+			kernel->machine->WriteRegister(2, (int)resultChar);
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
+
+		case SC_PrintChar:
+			DEBUG(dbgSys, "Print out a character\n");
+			SysPrintChar(kernel->machine->ReadRegister(4));
+			increasePC();
+			return;
+
+			ASSERTNOTREACHED();
+			break;
 		case SC_RandomNum:
-			result = RandomNum();
-			kernel->machine->WriteRegister(2, (int)result);
+			resultInteger = RandomNum();
+			kernel->machine->WriteRegister(2, (int)resultInteger);
 			increasePC();
 			return;
 			ASSERTNOTREACHED();
