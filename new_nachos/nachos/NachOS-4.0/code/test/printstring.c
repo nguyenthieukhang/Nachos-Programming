@@ -3,7 +3,7 @@
 int
 main()
 {
-  char str[] = "Hello, world!\n";
+  char str[] = "Hello\n";
   PrintString(str);
 
   Halt();
