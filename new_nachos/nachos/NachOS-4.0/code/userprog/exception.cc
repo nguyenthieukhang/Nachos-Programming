@@ -47,6 +47,7 @@
 //	"which" is the kind of exception.  The list of possible exceptions
 //	is in machine.h.
 //----------------------------------------------------------------------
+#define MAX_LENGTH 128
 
 void increasePC()
 {
@@ -193,6 +194,11 @@ void ExceptionHandler(ExceptionType which)
 				if (currentChar == 0)
 					break;
 				length++;
+			}
+			if(length > MAX_LENGTH) {
+				DEBUG(dbgSys, "PrintString: length is too long\n");
+				increasePC();
+				return;
 			}
 			char *buffer2;
 			buffer2 = new char[length + 1];
