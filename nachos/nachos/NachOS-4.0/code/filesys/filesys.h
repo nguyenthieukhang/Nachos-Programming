@@ -66,6 +66,7 @@ class FileSystem {
 #else // FILESYS
 class FileSystem {
   public:
+	FileSystem(){};
     FileSystem(bool format);		// Initialize the file system.
 					// Must be called *after* "synchDisk" 
 					// has been initialized.
