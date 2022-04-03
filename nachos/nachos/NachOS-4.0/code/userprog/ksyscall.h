@@ -167,17 +167,14 @@ char* User2System(char *buffer) {
 
 int Create(char *name) {
   char *sys_name = User2System(name);
-  if (!kernel->fileSystem->Create(sys_name, 0)) {
+  if (!kernel->fileSystem->Create(sys_name)) {
     DEBUG(dbgSys, "Create failed");
     return -1;
   }
   return 0;
 }
 
-OpenFileId SysOpen(char *name) {
-  char *sys_name = User2System(name);
-  OpenFile* file = kernel->fileSystem->Open(sys_name);
-  
+OpenFileId Open(char *name) {
 }
 
 #endif /* ! __USERPROG_KSYSCALL_H__ */
