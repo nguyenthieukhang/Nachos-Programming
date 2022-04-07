@@ -54,7 +54,23 @@ OpenFileId FileTable::Insert(char *fileName, int openMode) {
     if (fileDescriptor == -1) return -1;
 
     files[freeIndex] = new OpenFile(fileDescriptor);
-    this.openMode[freeIndex] = openMode;
+    this->openMode[freeIndex] = openMode;
 
     return freeIndex;
+}
+
+int FileTable::Seek(int position, int id) {
+    if (id < 2 || id >= fileCount) return -1;
+    if (files[id] == NULL) return -1;
+    if (position==-1) position = files[id]->Length();
+    if (position > files[id]->Length()) return -1; 
+    return files[id]->Seek(position);
+}
+
+bool FileTable::Remove(int id) {
+    if (id < 2 || id >= fileCount) return -1;
+    if (files[id] == NULL) return -1;
+    delete files[id];
+    files[id] = NULL;
+    return 0;
 }

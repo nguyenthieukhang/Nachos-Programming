@@ -53,7 +53,7 @@ class OpenFile {
 		}
 
     int Length() { Lseek(file, 0, 2); return Tell(file); }
-    
+    int Seek(int position){currentOffset = position; return currentOffset;}
   private:
     int file;
     int currentOffset;
@@ -68,7 +68,7 @@ class OpenFile {
 					// at "sector" on the disk
     ~OpenFile();			// Close the file
 
-    void Seek(int position); 		// Set the position from which to 
+    int Seek(int position); 		// Set the position from which to 
 					// start reading/writing -- UNIX lseek
 
     int Read(char *into, int numBytes); // Read/write bytes from the file,

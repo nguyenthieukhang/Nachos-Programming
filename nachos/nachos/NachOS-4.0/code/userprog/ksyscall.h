@@ -158,23 +158,40 @@ void SysPrintChar(char character) {
   kernel->synchConsoleOut->PutChar(character);
 }
 
-char* User2System(char *buffer) {
-  int len = strlen(buffer);
-  char *sys_buffer = new char[len];
-  strcpy(sys_buffer, buffer);
-  return sys_buffer;
+char* User2System(int address, int length =-1) {
+  int str_len=0;
+  if (length == -1)
+  {
+    int current;
+    do
+    {
+      kernel->machine->ReadMem(address+str_len, 1,&current);
+      str_len++;
+    } while ((current != '\0'&&length==-1)||(str_len==length));
+  }
+  char* buffer = new char[str_len+1];
+  for(int i=0;i<length;i++)
+  {
+    int current;
+    kernel->machine->ReadMem(address+i,1,&current);
+    buffer[i]=(unsigned char)current;
+  }
+  buffer[length]='\0';
+  return buffer;
 }
 
-int Create(char *name) {
-  char *sys_name = User2System(name);
-  if (!kernel->fileSystem->Create(sys_name)) {
-    DEBUG(dbgSys, "Create failed");
-    return -1;
-  }
-  return 0;
-}
+// int Create(char *name) {
+//   char *sys_name = User2System(name);
+//   if (!kernel->fileSystem->Create(sys_name)) {
+//     DEBUG(dbgSys, "Create failed");
+//     return -1;
+//   }
+//   return 0;
+// }
 
 OpenFileId Open(char *name) {
 }
+
+
 
 #endif /* ! __USERPROG_KSYSCALL_H__ */

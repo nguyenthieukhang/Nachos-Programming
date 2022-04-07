@@ -169,14 +169,12 @@ void ExceptionHandler(ExceptionType which)
 			char *buffer;
 			buffer = ReadBuffer(length);
 
-			// Transfer from kernel to user space
 
 			for (int i = 0; i < length; i++)
 			{
 				kernel->machine->WriteMem(address + i, 1, buffer[i]);
 			}
 			kernel->machine->WriteMem(address + length, 1, '\0');
-			// clean up after moving to user space
 			delete[] buffer;
 			increasePC();
 			return;
@@ -215,7 +213,27 @@ void ExceptionHandler(ExceptionType which)
 			return;
 			break;
 			ASSERTNOTREACHED();
-
+		case SC_Seek:
+			int position;
+			int id;
+			int result;
+			position = kernel->machine->ReadRegister(4);
+			id = kernel->machine->ReadRegister(5);
+			if (position<=1)
+			{
+				DEBUG(dbgSys, "Seek: Cannot seek to console input/output \n");
+				increasePC();
+			}
+			result = kernel->fileSystem->Seek(id, position);
+			kernel->machine->WriteRegister(2, result);
+			increasePC();
+			return;
+			break;
+		case SC_Remove:
+			int filenameAddress;
+			filenameAddress = kernel->machine->ReadRegister(4);
+			char *filename;
+			filename = User2System(filenameAddress);
 		default:
 			cerr << "Unexpected system call " << type << "\n";
 			break;

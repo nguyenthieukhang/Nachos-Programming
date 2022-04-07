@@ -299,7 +299,8 @@ FILESYS_H =../filesys/directory.h \
 	../filesys/filesys.h \
 	../filesys/openfile.h\
 	../filesys/pbitmap.h\
-	../filesys/synchdisk.h
+	../filesys/synchdisk.h\
+	../filesys/filetable.h
 
 FILESYS_C =../filesys/directory.cc\
 	../filesys/filehdr.cc\
@@ -307,8 +308,9 @@ FILESYS_C =../filesys/directory.cc\
 	../filesys/pbitmap.cc\
 	../filesys/openfile.cc\
 	../filesys/synchdisk.cc\
+	../filesys/filetable.cc
 
-FILESYS_O =directory.o filehdr.o filesys.o pbitmap.o openfile.o synchdisk.o
+FILESYS_O =directory.o filehdr.o filesys.o pbitmap.o openfile.o synchdisk.o filetable.o
 
 NETWORK_H = ../network/post.h
 

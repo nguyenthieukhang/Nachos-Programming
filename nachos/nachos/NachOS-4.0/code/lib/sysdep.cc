@@ -296,6 +296,12 @@ PollFile(int fd)
     return TRUE;
 }
 
+int OpenForRead(char *name) {
+    int file = open(name, O_RDONLY, 0);
+    ASSERT(file >= 0);
+    return file;
+}
+
 //----------------------------------------------------------------------
 // OpenForWrite
 // 	Open a file for writing.  Create it if it doesn't exist; truncate it 

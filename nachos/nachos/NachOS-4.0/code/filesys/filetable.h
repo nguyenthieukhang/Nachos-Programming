@@ -28,7 +28,8 @@ public:
      * @returns File id in the table or -1 if this file already exists
      */
     OpenFileId Insert(char *fileName, int openMode);
-
-}
+    int Seek(int position, int id);
+    bool Remove(int id);
+};
 
 #endif // FILETABLE_H

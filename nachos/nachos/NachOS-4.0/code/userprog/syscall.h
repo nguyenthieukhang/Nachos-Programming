@@ -43,6 +43,8 @@
 #define SC_RandomNum    47
 #define SC_ReadString   48
 #define SC_PrintString  49
+#define SC_Seek 55
+#define SC_Remove 56
 
 #ifndef IN_ASM
 

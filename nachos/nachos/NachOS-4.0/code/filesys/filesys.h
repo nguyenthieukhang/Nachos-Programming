@@ -36,13 +36,16 @@
 #include "copyright.h"
 #include "sysdep.h"
 #include "openfile.h"
+#include "filetable.h"
 
 #ifdef FILESYS_STUB 		// Temporarily implement file system calls as 
 				// calls to UNIX, until the real file system
 				// implementation is available
 class FileSystem {
   public:
-    FileSystem() {}
+	FileTable* fileTable;
+    FileSystem() {fileTable = new FileTable;}
+	~FileSystem(){delete fileTable;}
 
     bool Create(char *name) {
 	int fileDescriptor = OpenForWrite(name);
@@ -60,6 +63,7 @@ class FileSystem {
       }
 
     bool Remove(char *name) { return Unlink(name) == 0; }
+	int Seek(int position, int id){return fileTable[id].Seek(position,id);};
 
 };
 
@@ -84,12 +88,13 @@ class FileSystem {
     void List();			// List all the files in the file system
 
     void Print();			// List all the files and their contents
-
+	int Seek(int position, int id);
   private:
    OpenFile* freeMapFile;		// Bit map of free disk blocks,
 					// represented as a file
    OpenFile* directoryFile;		// "Root" directory -- list of 
 					// file names, represented as a file
+
 };
 
 #endif // FILESYS
