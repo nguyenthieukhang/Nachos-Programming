@@ -227,13 +227,16 @@ void ExceptionHandler(ExceptionType which)
 			result = kernel->fileSystem->Seek(id, position);
 			kernel->machine->WriteRegister(2, result);
 			increasePC();
-			return;
 			break;
 		case SC_Remove:
 			int filenameAddress;
 			filenameAddress = kernel->machine->ReadRegister(4);
 			char *filename;
 			filename = User2System(filenameAddress);
+			resultInteger = kernel->fileSystem->Remove(filename);
+			kernel->machine->WriteRegister(2, resultInteger);
+			increasePC();
+			break;
 		default:
 			cerr << "Unexpected system call " << type << "\n";
 			break;
