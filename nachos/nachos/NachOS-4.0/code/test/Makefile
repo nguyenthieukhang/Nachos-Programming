@@ -112,7 +112,7 @@ ifeq ($(hosttype),unknown)
 PROGRAMS = unknownhost
 else
 # change this if you create a new test program!
-PROGRAMS = add halt shell matmult sort segments printstring help ascii taofile mofile
+PROGRAMS = add halt shell matmult sort segments printstring help ascii taofile mofile modongfile
 endif
 
 all: $(PROGRAMS)
@@ -186,6 +186,12 @@ mofile.o: mofile.c
 mofile: mofile.o start.o
 	$(LD) $(LDFLAGS) start.o mofile.o -o mofile.coff
 	$(COFF2NOFF) mofile.coff mofile
+
+modongfile.o: modongfile.c
+	$(CC) $(CFLAGS) -c modongfile.c
+modongfile: modongfile.o start.o
+	$(LD) $(LDFLAGS) start.o modongfile.o -o modongfile.coff
+	$(COFF2NOFF) modongfile.coff modongfile
 
 clean:
 	$(RM) -f *.o *.ii

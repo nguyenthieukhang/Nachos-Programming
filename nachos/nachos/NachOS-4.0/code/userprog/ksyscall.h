@@ -233,4 +233,14 @@ OpenFileId SysOpen(char *name)
   return openFileId;
 }
 
+int SysClose(OpenFileId id)
+{
+  if (!kernel->fileSystem->CloseFile(id))
+  {
+    DEBUG(dbgSys, "Close failed");
+    return -1;
+  }
+  return 0;
+}
+
 #endif /* ! __USERPROG_KSYSCALL_H__ */

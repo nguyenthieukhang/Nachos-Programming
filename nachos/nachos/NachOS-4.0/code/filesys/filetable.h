@@ -9,7 +9,8 @@
 #define MODE_WRITE 1
 #define MODE_RW 2
 
-class FileTable {
+class FileTable
+{
 private:
     OpenFile **files;
     int *openMode;
@@ -21,15 +22,17 @@ public:
 
     /**
      * Inserts new file into file table
-     * 
+     *
      * @param fileName Buffer in system space of new file's name
      * @param openMode Open mode of this new file
-     * 
+     *
      * @returns File id in the table or -1 if this file already exists
      */
     OpenFileId Insert(char *fileName, int openMode);
     int Seek(int position, int id);
     bool Remove(int id);
+    int getSize();
+    int getFileDescriptor(int id);
 };
 
 #endif // FILETABLE_H

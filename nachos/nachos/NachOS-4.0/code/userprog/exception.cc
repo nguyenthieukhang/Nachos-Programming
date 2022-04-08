@@ -230,6 +230,15 @@ void ExceptionHandler(ExceptionType which)
 			increasePC();
 			return;
 			break;
+		case SC_Close:
+			OpenFileId openFileIdClose;
+			int resultClose;
+			openFileIdClose = kernel->machine->ReadRegister(4);
+			resultClose = SysClose(openFileIdClose);
+			kernel->machine->WriteRegister(2, resultClose);
+			increasePC();
+			return;
+			break;
 		case SC_Seek:
 			int position;
 			int id;
