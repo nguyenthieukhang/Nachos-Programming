@@ -239,11 +239,14 @@ void ExceptionHandler(ExceptionType which)
 			if (position <= 1)
 			{
 				DEBUG(dbgSys, "Seek: Cannot seek to console input/output \n");
-				increasePC();
 			}
-			result = kernel->fileSystem->Seek(id, position);
-			kernel->machine->WriteRegister(2, result);
+			else
+			{
+				result = kernel->fileSystem->Seek(id, position);
+				kernel->machine->WriteRegister(2, result);
+			}
 			increasePC();
+			return;
 			break;
 		case SC_Remove:
 			int filenameAddress;
@@ -253,6 +256,7 @@ void ExceptionHandler(ExceptionType which)
 			resultInteger = kernel->fileSystem->Remove(filename);
 			kernel->machine->WriteRegister(2, resultInteger);
 			increasePC();
+			return;
 			break;
 		default:
 			cerr << "Unexpected system call " << type << "\n";

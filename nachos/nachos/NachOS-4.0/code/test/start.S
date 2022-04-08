@@ -90,6 +90,14 @@ PrintChar:
 	j	$31
 	.end PrintChar
 
+	.globl ReadString
+	.ent	ReadString
+ReadString:
+	addiu $2,$0,SC_ReadString
+	syscall
+	j	$31
+	.end PrintString
+
 	.globl PrintString
 	.ent	PrintString
 PrintString:

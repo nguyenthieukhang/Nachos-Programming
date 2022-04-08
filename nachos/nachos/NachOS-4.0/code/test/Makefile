@@ -112,7 +112,7 @@ ifeq ($(hosttype),unknown)
 PROGRAMS = unknownhost
 else
 # change this if you create a new test program!
-PROGRAMS = add halt shell matmult sort segments printstring help ascii taofile mofile
+PROGRAMS = add halt shell matmult sort segments printstring help ascii createfile mofile
 endif
 
 all: $(PROGRAMS)
@@ -175,11 +175,11 @@ ascii: ascii.o start.o
 	$(LD) $(LDFLAGS) start.o ascii.o -o ascii.coff
 	$(COFF2NOFF) ascii.coff ascii
 
-taofile.o: taofile.c
-	$(CC) $(CFLAGS) -c taofile.c
-taofile: taofile.o start.o
-	$(LD) $(LDFLAGS) start.o taofile.o -o taofile.coff
-	$(COFF2NOFF) taofile.coff taofile
+createfile.o: createfile.c
+	$(CC) $(CFLAGS) -c createfile.c
+createfile: createfile.o start.o
+	$(LD) $(LDFLAGS) start.o createfile.o -o createfile.coff
+	$(COFF2NOFF) createfile.coff createfile
 
 mofile.o: mofile.c
 	$(CC) $(CFLAGS) -c mofile.c
