@@ -88,7 +88,7 @@ void ExceptionHandler(ExceptionType which)
 			/* Process SysAdd Systemcall*/
 			// int resultAdd;
 			resultInteger = SysAdd(/* int op1 */ (int)kernel->machine->ReadRegister(4),
-							/* int op2 */ (int)kernel->machine->ReadRegister(5));
+								   /* int op2 */ (int)kernel->machine->ReadRegister(5));
 
 			DEBUG(dbgSys, "Add returning with " << resultInteger << "\n");
 			/* Prepare Result */
@@ -169,7 +169,6 @@ void ExceptionHandler(ExceptionType which)
 			char *buffer;
 			buffer = ReadBuffer(length);
 
-
 			for (int i = 0; i < length; i++)
 			{
 				kernel->machine->WriteMem(address + i, 1, buffer[i]);
@@ -193,7 +192,8 @@ void ExceptionHandler(ExceptionType which)
 					break;
 				length++;
 			}
-			if(length > MAX_LENGTH) {
+			if (length > MAX_LENGTH)
+			{
 				DEBUG(dbgSys, "PrintString: length is too long\n");
 				increasePC();
 				return;
@@ -213,13 +213,30 @@ void ExceptionHandler(ExceptionType which)
 			return;
 			break;
 			ASSERTNOTREACHED();
+		case SC_Create:
+			int fileNameAddressCreate, resultCreate;
+			fileNameAddressCreate = kernel->machine->ReadRegister(4);
+			resultCreate = SysCreate((char *)fileNameAddressCreate);
+			kernel->machine->WriteRegister(2, resultCreate);
+			increasePC();
+			return;
+			break;
+		case SC_Open:
+			int fileNameAddressOpen;
+			OpenFileId openFileId;
+			fileNameAddressOpen = kernel->machine->ReadRegister(4);
+			openFileId = SysOpen((char *)fileNameAddressOpen);
+			kernel->machine->WriteRegister(2, (int)openFileId);
+			increasePC();
+			return;
+			break;
 		case SC_Seek:
 			int position;
 			int id;
 			int result;
 			position = kernel->machine->ReadRegister(4);
 			id = kernel->machine->ReadRegister(5);
-			if (position<=1)
+			if (position <= 1)
 			{
 				DEBUG(dbgSys, "Seek: Cannot seek to console input/output \n");
 				increasePC();
