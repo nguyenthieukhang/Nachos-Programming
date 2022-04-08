@@ -62,7 +62,16 @@ class FileSystem {
 	  return new OpenFile(fileDescriptor);
       }
 
-    bool Remove(char *name) { return Unlink(name) == 0; }
+    bool Remove(char *name) { 
+		for (int i=0; i<MAX_NUMBER_OF_FILES; i++) {
+			if (fileTable->files[i] != NULL) {
+				if (strcmp(fileTable->files[i]->fileName, name) == 0) {
+				return FALSE;
+			}
+		}
+			
+	}
+		return Unlink(name) == 0; }
 	int Seek(int position, int id){return fileTable[id].Seek(position,id);};
 
 };

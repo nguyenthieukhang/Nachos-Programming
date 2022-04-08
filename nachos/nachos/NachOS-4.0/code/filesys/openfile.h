@@ -29,8 +29,15 @@
 					// See definitions listed under #else
 class OpenFile {
   public:
-    OpenFile(int f) { file = f; currentOffset = 0; }	// open the file
-    ~OpenFile() { Close(file); }			// close the file
+    char* fileName;
+    OpenFile(int f) { file = f; currentOffset = 0; }
+	OpenFile(int f, char* filename){
+		file = f;
+		currentOffset = 0;
+		fileName = new char[strlen(filename)+1];
+		strncpy(fileName, filename,strlen(filename)+1);	}	// open the file
+    ~OpenFile() { Close(file);
+	if (fileName!=NULL) delete fileName; }			// close the file
 
     int ReadAt(char *into, int numBytes, int position) { 
     		Lseek(file, position, 0); 
