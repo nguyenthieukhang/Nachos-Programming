@@ -29,7 +29,7 @@ public:
      */
     OpenFileId Insert(char *fileName, int openMode);
     int Seek(int position, int id);
-    bool Remove(int id);
+    int Remove(int id);
 };
 
 #endif // FILETABLE_H

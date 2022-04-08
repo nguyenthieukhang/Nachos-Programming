@@ -78,7 +78,7 @@ void ExceptionHandler(ExceptionType which)
 			DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
 
 			SysHalt();
-
+			return;
 			ASSERTNOTREACHED();
 			break;
 

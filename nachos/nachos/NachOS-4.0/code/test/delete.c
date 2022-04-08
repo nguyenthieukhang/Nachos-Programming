@@ -5,7 +5,6 @@ int main(){
     int length;
     int res;
 
-    Create("myfile.txt");
     PrintString("Enter the length of file name: ");
     length = ReadNum();
     PrintString("Enter the file name: ");
