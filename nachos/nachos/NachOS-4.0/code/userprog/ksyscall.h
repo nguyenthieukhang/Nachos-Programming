@@ -233,7 +233,7 @@ OpenFileId SysOpen(char *name)
   return openFileId;
 }
 
-void System2User(char *buffer, int address, int length)
+void System2User(char *buffer, int address, int length=-1)
 {
   if (length==-1) length = strlen(buffer);
   for (int i = 0; i < length; i++)
