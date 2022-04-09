@@ -181,6 +181,12 @@ createfile: createfile.o start.o
 	$(LD) $(LDFLAGS) start.o createfile.o -o createfile.coff
 	$(COFF2NOFF) createfile.coff createfile
 
+taofile.o: taofile.c
+	$(CC) $(CFLAGS) -c taofile.c
+taofile: taofile.o start.o
+	$(LD) $(LDFLAGS) start.o taofile.o -o taofile.coff
+	$(COFF2NOFF) taofile.coff taofile
+
 mofile.o: mofile.c
 	$(CC) $(CFLAGS) -c mofile.c
 mofile: mofile.o start.o

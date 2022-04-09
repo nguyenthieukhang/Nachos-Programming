@@ -79,7 +79,6 @@ public:
 		Close(fileDescriptor);
 		return TRUE;
 	}
-
 	bool Remove(char *name) { return Unlink(name) == 0; }
 	int Seek(int position, int id) { return fileTable[id].Seek(position, id); };
 };
