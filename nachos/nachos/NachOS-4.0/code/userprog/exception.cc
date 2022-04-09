@@ -239,6 +239,20 @@ void ExceptionHandler(ExceptionType which)
 			increasePC();
 			return;
 			break;
+		case SC_Read:
+			int addressToStore;
+			int sizeToStore;
+			int openFileIdRead;
+			int resultReadFile;
+			addressToStore = kernel->machine->ReadRegister(4);
+			sizeToStore = kernel->machine->ReadRegister(5);
+			openFileIdRead = kernel->machine->ReadRegister(6);
+			resultReadFile = SysReadFile((char *)addressToStore, sizeToStore, openFileIdRead);
+			kernel->machine->WriteRegister(2, resultReadFile);
+			increasePC();
+			return;
+			break;
+
 		case SC_Seek:
 			int position;
 			int id;

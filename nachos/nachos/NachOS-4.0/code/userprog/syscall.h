@@ -43,6 +43,7 @@
 #define SC_RandomNum 47
 #define SC_ReadString 48
 #define SC_PrintString 49
+// #define SC_ReadFile 50
 
 #ifndef IN_ASM
 
@@ -98,7 +99,7 @@ char *ReadBuffer(int);
 /*
  *
  */
-void ReadString(char[],int);
+void ReadString(char[], int);
 
 /*
  * Print out a string, not using cout, printf or similar

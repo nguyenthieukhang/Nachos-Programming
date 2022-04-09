@@ -242,6 +242,7 @@ int SysClose(OpenFileId id)
   }
   return 0;
 }
+
 void System2User(char *buffer, int address, int length = -1)
 {
   if (length == -1)
@@ -251,6 +252,28 @@ void System2User(char *buffer, int address, int length = -1)
     kernel->machine->WriteMem(address + i, 1, buffer[i]);
   }
   kernel->machine->WriteMem(address + length, 1, '\0');
+}
+
+int SysReadFile(char *buffer, int size, OpenFileId id)
+{
+  int fd = kernel->fileSystem->fileTable->getFileDescriptor(id);
+  if (fd == -1)
+  {
+    DEBUG(dbgSys, "Read failed");
+    return -1;
+  }
+  // Using the OpenFile class to read the file
+  OpenFile openFile = OpenFile(fd);
+  char *buffer2 = new char[size + 1];
+  int numRead = openFile.Read(buffer2, size);
+  buffer2[size] = '\0';
+  System2User(buffer2, (int)buffer, size + 1);
+  if (numRead < 0)
+  {
+    DEBUG(dbgSys, "Read failed");
+    return -1;
+  }
+  return 0;
 }
 
 #endif /* ! __USERPROG_KSYSCALL_H__ */
