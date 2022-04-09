@@ -12,11 +12,12 @@
 class FileTable
 {
 private:
-    OpenFile **files;
+
     int *openMode;
     int fileCount;
 
 public:
+    OpenFile **files;
     FileTable();
     ~FileTable();
 

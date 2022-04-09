@@ -62,10 +62,22 @@ public:
 	{
 		int fileDescriptor = OpenForReadWrite(name, FALSE);
 
-		if (fileDescriptor == -1)
-			return NULL;
-		return new OpenFile(fileDescriptor);
+	  if (fileDescriptor == -1) return NULL;
+	  return new OpenFile(fileDescriptor);
+      }
+
+    bool Remove(char *name) { 
+		for (int i=0; i<MAX_NUMBER_OF_FILES; i++) {
+			if (fileTable->files[i] != NULL) {
+				if (strcmp(fileTable->files[i]->fileName, name) == 0) {
+				return FALSE;
+				}
+			}
+		}
+		return Unlink(name) == 0; 
 	}
+
+	int Seek(int position, int id){return fileTable[id].Seek(position,id);};
 
 	bool CloseFile(OpenFileId id)
 	{
@@ -79,8 +91,6 @@ public:
 		Close(fileDescriptor);
 		return TRUE;
 	}
-	bool Remove(char *name) { return Unlink(name) == 0; }
-	int Seek(int position, int id) { return fileTable[id].Seek(position, id); };
 };
 
 #else // FILESYS
@@ -105,7 +115,7 @@ public:
 	void List(); // List all the files in the file system
 
 	void Print(); // List all the files and their contents
-	int Seek(int position, int id);
+	//int Seek(int position, int id);
 
 private:
 	OpenFile *freeMapFile;	 // Bit map of free disk blocks,

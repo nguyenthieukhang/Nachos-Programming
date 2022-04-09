@@ -27,25 +27,25 @@
 #ifdef FILESYS_STUB // Temporarily implement calls to
 					// Nachos file system as calls to UNIX!
 					// See definitions listed under #else
-class OpenFile
-{
-public:
-	OpenFile(int f)
-	{
+class OpenFile {
+  public:
+    char* fileName;
+    OpenFile(int f) { file = f; currentOffset = 0; }
+	OpenFile(int f, char* filename){
 		file = f;
 		currentOffset = 0;
-	}							 // open the file
-	~OpenFile() { Close(file); } // close the file
+		fileName = new char[strlen(filename)+1];
+		strncpy(fileName, filename,strlen(filename)+1);	}	// open the file
+    ~OpenFile() { Close(file);
+	if (fileName!=NULL) delete fileName; }			// close the file
 
-	int ReadAt(char *into, int numBytes, int position)
-	{
-		Lseek(file, position, 0);
-		return ReadPartial(file, into, numBytes);
-	}
-	int WriteAt(char *from, int numBytes, int position)
-	{
-		Lseek(file, position, 0);
-		WriteFile(file, from, numBytes);
+    int ReadAt(char *into, int numBytes, int position) { 
+    		Lseek(file, position, 0); 
+		return ReadPartial(file, into, numBytes); 
+		}	
+    int WriteAt(char *from, int numBytes, int position) { 
+    		Lseek(file, position, 0); 
+		WriteFile(file, from, numBytes); 
 		return numBytes;
 	}
 	int Read(char *into, int numBytes)

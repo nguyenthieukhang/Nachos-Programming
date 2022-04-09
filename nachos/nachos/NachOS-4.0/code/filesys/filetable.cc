@@ -62,7 +62,7 @@ OpenFileId FileTable::Insert(char *fileName, int openMode)
     if (fileDescriptor == -1)
         return -1;
 
-    files[freeIndex] = new OpenFile(fileDescriptor);
+    files[freeIndex] = new OpenFile(fileDescriptor,fileName);
     this->openMode[freeIndex] = openMode;
 
     return freeIndex;
