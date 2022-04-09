@@ -252,6 +252,19 @@ void ExceptionHandler(ExceptionType which)
 			increasePC();
 			return;
 			break;
+		case SC_Write:
+			int addressToGetData;
+			int sizeToWrite;
+			int openFileIdWrite;
+			int resultWriteFile;
+			addressToGetData = kernel->machine->ReadRegister(4);
+			sizeToWrite = kernel->machine->ReadRegister(5);
+			openFileIdWrite = kernel->machine->ReadRegister(6);
+			resultWriteFile = SysWriteFile(addressToGetData, sizeToWrite, openFileIdWrite);
+			kernel->machine->WriteRegister(2, resultWriteFile);
+			increasePC();
+			return;
+			break;
 
 		case SC_Seek:
 			int position;

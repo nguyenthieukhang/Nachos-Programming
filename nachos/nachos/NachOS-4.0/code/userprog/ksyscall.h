@@ -276,4 +276,24 @@ int SysReadFile(char *buffer, int size, OpenFileId id)
   return 0;
 }
 
+int SysWriteFile(int fromAddress, int size, OpenFileId id)
+{
+  int fd = kernel->fileSystem->fileTable->getFileDescriptor(id);
+  if (fd == -1)
+  {
+    DEBUG(dbgSys, "Write failed");
+    return -1;
+  }
+  // Using the OpenFile class to write to the file
+  OpenFile openFile = OpenFile(fd);
+  char *buffer = User2System(fromAddress);
+  int numWrite = openFile.Write(buffer, size);
+  if (numWrite < 0)
+  {
+    DEBUG(dbgSys, "Write failed");
+    return -1;
+  }
+  return 0;
+}
+
 #endif /* ! __USERPROG_KSYSCALL_H__ */
