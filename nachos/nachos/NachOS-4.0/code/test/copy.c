@@ -7,6 +7,7 @@ int main(){
     int file1_id, file2_id;
     int byte_read;
     char file1_content[255];
+    int file1_size, file2_size;
 
     PrintString("Enter the length of file name 1: ");
     length1 = ReadNum();
@@ -23,6 +24,16 @@ int main(){
 
     file1_id = Open(file1_name);
     file2_id = Open(file2_name);
+
+    file1_size = Seek(-1, file1_id);
+    file2_size = Seek(-1, file2_id);
+    if (file1_size < file2_size) {
+        Close(file2_id);
+        Remove(file2_name);
+        Create(file2_name);
+        file2_id = Open(file2_name);
+    }
+    Seek(0, file1_id);
 
     do {
         byte_read = Read(file1_content, 255, file1_id);
