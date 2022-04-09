@@ -81,7 +81,7 @@ int FileTable::Seek(int position, int id)
     return files[id]->Seek(position);
 }
 
-bool FileTable::Remove(int id)
+int FileTable::Remove(int id)
 {
     if (id < 2 || id >= fileCount)
         return -1;

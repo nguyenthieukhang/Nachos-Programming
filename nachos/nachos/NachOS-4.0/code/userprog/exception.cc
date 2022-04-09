@@ -78,7 +78,7 @@ void ExceptionHandler(ExceptionType which)
 			DEBUG(dbgSys, "Shutdown, initiated by user program.\n");
 
 			SysHalt();
-
+			return;
 			ASSERTNOTREACHED();
 			break;
 
@@ -248,10 +248,12 @@ void ExceptionHandler(ExceptionType which)
 			if (position <= 1)
 			{
 				DEBUG(dbgSys, "Seek: Cannot seek to console input/output \n");
-				increasePC();
 			}
-			result = kernel->fileSystem->Seek(id, position);
-			kernel->machine->WriteRegister(2, result);
+			else
+			{
+				result = kernel->fileSystem->Seek(id, position);
+				kernel->machine->WriteRegister(2, result);
+			}
 			increasePC();
 			return;
 			break;
@@ -260,6 +262,11 @@ void ExceptionHandler(ExceptionType which)
 			filenameAddress = kernel->machine->ReadRegister(4);
 			char *filename;
 			filename = User2System(filenameAddress);
+			resultInteger = kernel->fileSystem->Remove(filename);
+			kernel->machine->WriteRegister(2, resultInteger);
+			increasePC();
+			return;
+			break;
 		default:
 			cerr << "Unexpected system call " << type << "\n";
 			break;

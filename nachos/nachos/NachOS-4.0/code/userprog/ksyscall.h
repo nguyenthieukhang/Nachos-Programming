@@ -242,5 +242,15 @@ int SysClose(OpenFileId id)
   }
   return 0;
 }
+void System2User(char *buffer, int address, int length = -1)
+{
+  if (length == -1)
+    length = strlen(buffer);
+  for (int i = 0; i < length; i++)
+  {
+    kernel->machine->WriteMem(address + i, 1, buffer[i]);
+  }
+  kernel->machine->WriteMem(address + length, 1, '\0');
+}
 
 #endif /* ! __USERPROG_KSYSCALL_H__ */

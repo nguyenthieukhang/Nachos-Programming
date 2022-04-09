@@ -96,6 +96,11 @@ int RandomNum();
 char *ReadBuffer(int);
 
 /*
+ *
+ */
+void ReadString(char[],int);
+
+/*
  * Print out a string, not using cout, printf or similar
  */
 void PrintString(char[]);
