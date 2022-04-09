@@ -233,6 +233,14 @@ RandomNum:
 	syscall
 	j 	$31
 	.end RandomNum
+
+	.globl FileSize
+	.ent    FileSize
+FileSize:
+	addiu $2, $0, SC_FileSize
+	syscall
+	j 	$31
+	.end FileSize
 	
 /* dummy function to keep gcc happy */
         .globl  __main

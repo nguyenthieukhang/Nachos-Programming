@@ -4,21 +4,30 @@ int main()
     char file_name[255],file_content[255];
     int length;
     int res;
+    int file_id;
+    int byte_read;
+
     PrintString("Enter the length of file name: ");
     length = ReadNum();
     PrintString("Enter the file name: ");
     ReadString(file_name, length);
 
-    //res = Read(file_name);
-    if (res == -1)
-        PrintString("File cannot be read\n");
-    else
-        PrintString("File read successfully\n");
-    // do 
-    // {
-        // PrintString(filecontent);
-    // } while (True);//not EOF - depending on Read() implementation
+    file_id = Open(file_name);
+    if (file_id == -1) {
+        PrintString("Unable to open file\n");
+        return 0;
+    }
+
+    PrintString(file_name);
+    PrintString("\n");
+
+    do 
+    {
+        byte_read = Read(file_content, 255, file_id);
+        PrintString(file_content);
+    } while (byte_read == 255);
     
+    Close(file_name);
     Halt();
     return 0;
 }
