@@ -18,16 +18,13 @@ int main()
         return 0;
     }
 
-    PrintString(file_name);
-    PrintString("\n");
-
-    do 
-    {
+    do {
         byte_read = Read(file_content, 255, file_id);
         PrintString(file_content);
     } while (byte_read == 255);
-    
-    Close(file_name);
+    PrintString("\n");
+
+    // Don't close file. Destructor ALREADY handled!
     Halt();
     return 0;
 }

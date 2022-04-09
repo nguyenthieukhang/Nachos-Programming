@@ -70,7 +70,7 @@ OpenFileId FileTable::Insert(char *fileName, int openMode)
 
 int FileTable::Seek(int position, int id)
 {
-    if (id < 2 || id >= fileCount)
+    if (id < 2 || id >= MAX_NUMBER_OF_FILES)
         return -1;
     if (files[id] == NULL)
         return -1;

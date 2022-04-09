@@ -77,7 +77,9 @@ public:
 		return Unlink(name) == 0; 
 	}
 
-	int Seek(int position, int id){return fileTable[id].Seek(position,id);};
+	int Seek(int position, int id) {
+		return fileTable->Seek(position, id);
+	};
 
 	bool CloseFile(OpenFileId id)
 	{

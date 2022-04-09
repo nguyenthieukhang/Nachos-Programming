@@ -30,7 +30,7 @@
 class OpenFile {
   public:
     char* fileName;
-    OpenFile(int f) { file = f; currentOffset = 0; }
+    OpenFile(int f) { fileName = NULL; file = f; currentOffset = 0; }
 	OpenFile(int f, char* filename){
 		file = f;
 		currentOffset = 0;

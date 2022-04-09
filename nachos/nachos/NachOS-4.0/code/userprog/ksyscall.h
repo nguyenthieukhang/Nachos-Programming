@@ -254,7 +254,7 @@ void System2User(char *buffer, int address, int length = -1)
   kernel->machine->WriteMem(address + length, 1, '\0');
 }
 
-int SysReadFile(char *buffer, int size, OpenFileId id)
+int SysReadFile(int bufferPtr, int size, OpenFileId id)
 {
   int fd = kernel->fileSystem->fileTable->getFileDescriptor(id);
   if (fd == -1)
@@ -263,17 +263,19 @@ int SysReadFile(char *buffer, int size, OpenFileId id)
     return -1;
   }
   // Using the OpenFile class to read the file
-  OpenFile openFile = OpenFile(fd);
   char *buffer2 = new char[size + 1];
-  int numRead = openFile.Read(buffer2, size);
+  int numRead = kernel->fileSystem->fileTable->files[id]->Read(buffer2, size);
   buffer2[size] = '\0';
-  System2User(buffer2, (int)buffer, size + 1);
+  System2User(buffer2, bufferPtr);
+  delete[] buffer2;
+
   if (numRead < 0)
   {
     DEBUG(dbgSys, "Read failed");
     return -1;
   }
-  return 0;
+
+  return numRead;
 }
 
 int SysWriteFile(int fromAddress, int size, OpenFileId id)
@@ -285,15 +287,15 @@ int SysWriteFile(int fromAddress, int size, OpenFileId id)
     return -1;
   }
   // Using the OpenFile class to write to the file
-  OpenFile openFile = OpenFile(fd);
   char *buffer = User2System(fromAddress);
-  int numWrite = openFile.Write(buffer, size);
+  int numWrite = kernel->fileSystem->fileTable->files[id]->Write(buffer, size);
+  delete[] buffer;
   if (numWrite < 0)
   {
     DEBUG(dbgSys, "Write failed");
     return -1;
   }
-  return 0;
+  return numWrite;
 }
 
 #endif /* ! __USERPROG_KSYSCALL_H__ */

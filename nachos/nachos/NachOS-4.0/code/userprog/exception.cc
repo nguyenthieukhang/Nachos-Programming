@@ -47,7 +47,7 @@
 //	"which" is the kind of exception.  The list of possible exceptions
 //	is in machine.h.
 //----------------------------------------------------------------------
-#define MAX_LENGTH 128
+#define MAX_LENGTH 256
 
 void increasePC()
 {
@@ -244,10 +244,12 @@ void ExceptionHandler(ExceptionType which)
 			int sizeToStore;
 			int openFileIdRead;
 			int resultReadFile;
+
 			addressToStore = kernel->machine->ReadRegister(4);
 			sizeToStore = kernel->machine->ReadRegister(5);
 			openFileIdRead = kernel->machine->ReadRegister(6);
-			resultReadFile = SysReadFile((char *)addressToStore, sizeToStore, openFileIdRead);
+
+			resultReadFile = SysReadFile(addressToStore, sizeToStore, openFileIdRead);
 			kernel->machine->WriteRegister(2, resultReadFile);
 			increasePC();
 			return;
@@ -272,13 +274,13 @@ void ExceptionHandler(ExceptionType which)
 			int result;
 			position = kernel->machine->ReadRegister(4);
 			id = kernel->machine->ReadRegister(5);
-			if (position <= 1)
+			if (id <= 1)
 			{
 				DEBUG(dbgSys, "Seek: Cannot seek to console input/output \n");
 			}
 			else
 			{
-				result = kernel->fileSystem->Seek(id, position);
+				result = kernel->fileSystem->Seek(position, id);
 				kernel->machine->WriteRegister(2, result);
 			}
 			increasePC();
@@ -309,7 +311,7 @@ void ExceptionHandler(ExceptionType which)
 	case OverflowException:
 	case IllegalInstrException:
 	case NumExceptionTypes:
-		cerr << "Exception occurred" << which << "\n";
+		cerr << "Exception occurred " << which << "\n";
 		SysHalt();
 		break;
 		ASSERTNOTREACHED();
